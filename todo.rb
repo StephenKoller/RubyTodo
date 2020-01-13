@@ -1,7 +1,7 @@
 #! /usr/bin/env ruby
 
 @todos = []
-def main_menu
+def main
   puts %(
     Ruby Todo List
     --------------
@@ -24,16 +24,35 @@ def help_menu
   )
 end
 
+def add_item(item)
+  puts item
+  # @todos.push(item)
+  main
+end
+
+def clearScreen
+  if RUBY_PLATFORM =~ /win32|win64|\.NET|windows|cygwin|mingw32/i
+    system('cls')
+  else
+    system('clear')
+ end
+end
+
 if __FILE__ == $0
   user_input = ""
+
   until user_input == "exit" or user_input == "quit" do
+    clearScreen
     case user_input
+      when /a\s+(?<item>\w+( \w+)*)/
+        add_item($~[:item])
       when "help"
         help_menu
       else
-        main_menu
+        main
       end
     user_input = gets.chomp
   end
+
   puts "Goodbye!"
 end
